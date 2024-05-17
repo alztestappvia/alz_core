@@ -1,0 +1,40 @@
+{
+    "extend_es_root": {
+        "policy_assignments": [
+            "Deny-Resource-Locations",
+            "Deny-RSG-Locations",
+            "Deploy-Diagnostics-AKS",
+            "Deploy-NetWatcher"
+        ],
+        "policy_definitions": [
+            "Require-Tag-values-Res",
+            "Require-Tag-values-RG",
+            "Deploy-SubActivityAlerts"
+        ],
+        "policy_set_definitions": [
+            "Deploy-SubActivityAlerts",
+            "Require-Mand-Tags"
+        ],
+        "role_definitions": [],
+        "archetype_config": {
+            "parameters": {
+                "Deny-Resource-Locations": {
+                    "listOfAllowedLocations": [
+                        "uksouth",
+                        "global"
+                    ]
+                },
+                "Deny-RSG-Locations": {
+                    "listOfAllowedLocations": [
+                        "uksouth",
+                        "global"
+                    ]
+                },
+                "Deploy-Resource-Diag": {
+                    "AKSLogAnalyticsEffect": "Disabled"
+                }
+            },
+            "access_control": {}
+        }
+    }
+}

@@ -1,0 +1,84 @@
+{
+    "name": "Require-Tag-values-Res",
+    "type": "Microsoft.Authorization/policyDefinitions",
+    "apiVersion": "2021-06-01",
+    "scope": null,
+    "properties": {
+        "policyType": "BuiltIn",
+        "mode": "Indexed",
+        "displayName": "Require tag to use pre-defined values on resources",
+        "description": "Require tag to use pre-defined values on resources.",
+        "metadata": {
+            "version": "1.0.0",
+            "category": "Tags",
+            "source": "Appvia",
+            "alzCloudEnvironments": [
+                "AzureCloud",
+                "AzureChinaCloud",
+                "AzureUSGovernment"
+            ]
+        },
+        "policyRule": {
+            "if": {
+                "allOf": [
+                    {
+                        "not": {
+                            "field": "[concat('tags[', parameters('tagName'), ']')]",
+                            "in": "[parameters('listofallowedtagValues')]"
+                        }
+                    },
+                    {
+                        "not": {
+                            "field": "type",
+                            "in": "[parameters('listofExcludedResourceTypes')]"
+                        }
+                    }
+                ]
+            },
+            "then": {
+                "effect": "[parameters('effect')]"
+            }
+        },
+        "parameters": {
+            "effect": {
+                "type": "String",
+                "metadata": {
+                    "displayName": "Effect",
+                    "description": "Enable or disable the execution of the audit policy"
+                },
+                "allowedValues": [
+                    "Audit",
+                    "Deny",
+                    "Disabled"
+                ],
+                "defaultValue": "Deny"
+            },
+            "tagName": {
+                "type": "String",
+                "metadata": {
+                    "displayName": "Tag Name",
+                    "description": "Name of the tag"
+                }
+            },
+            "listofallowedtagValues": {
+                "type": "Array",
+                "metadata": {
+                    "displayName": "Tag Values",
+                    "description": "A pre-approved list of values for the tag"
+                }
+            },
+            "listofExcludedResourceTypes": {
+                "type": "Array",
+                "metadata": {
+                    "displayName": "Excluded Resource Types",
+                    "description": "A list of resource types to exclude from this policy"
+                },
+                "defaultValue": [
+                    "Microsoft.Security/automations",
+                    "Microsoft.Network/networkWatchers",
+                    "Microsoft.Network/privateDnsZones/virtualNetworkLinks"
+                ]
+            }
+        }
+    }
+}

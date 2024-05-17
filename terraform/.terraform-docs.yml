@@ -1,0 +1,17 @@
+content: |-
+  # ALZ.Core 
+  This project deploys all the core governance controls for working within Azure.  It lays out the management group hierarchy as well as applies all of the Azure Policy and Role Based Access Controls to the management groups.  
+  
+  It is implemented using the Microsoft ALZ terraform module https://github.com/Azure/terraform-azurerm-caf-enterprise-scale/wiki 
+
+  # Updating Policies
+
+  Policies can be asssigned / customised in the the `terraform/lib` folder. Comprehensive documentation for customising policy can be found here: https://github.com/Azure/terraform-azurerm-caf-enterprise-scale/wiki/%5BExamples%5D-Create-Custom-Policies-Policy-Sets-and-Assignments
+
+  # Updating the Management Group Hierarchy
+
+  Additional landing zone management groups can be added into the hierarchy by editing `custom_landing_zones` in `main.tf`.  Comprehensive documentation on editing the hierarchy can be found here: https://github.com/Azure/terraform-azurerm-caf-enterprise-scale/wiki/%5BExamples%5D-Deploy-Custom-Landing-Zone-Archetypes
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}

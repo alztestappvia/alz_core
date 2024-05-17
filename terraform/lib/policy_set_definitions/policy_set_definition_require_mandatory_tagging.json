@@ -1,0 +1,211 @@
+{
+  "name": "Require-Mand-Tags",
+  "type": "Microsoft.Authorization/policySetDefinitions",
+  "apiVersion": "2021-06-01",
+  "scope": null,
+  "properties": {
+    "policyType": "Custom",
+    "displayName": "Ensure mandatory tagging is applied to resource groups and resources",
+    "description": "Contains the core tagging policies applicable to the organisation",
+    "metadata": {
+      "version": "1.0.1",
+      "category": "Tags"
+    },
+    "parameters": {
+      "listofallowedOperationsTeams": {
+        "type": "Array",
+        "metadata": {
+          "displayName": "Operations Teams Tag Values",
+          "description": "A pre-approved list of values for the Operations Teams tag"
+        }
+      },
+      "listofallowedDataClassifications": {
+        "type": "Array",
+        "metadata": {
+          "displayName": "Data Classifications Tag Values",
+          "description": "A pre-approved list of values for the Data Classifications tag"
+        }
+      },
+      "listofallowedBusinessCriticality": {
+        "type": "Array",
+        "metadata": {
+          "displayName": "Business Criticality Tag Values",
+          "description": "A pre-approved list of values for the Business Criticality tag"
+        }
+      },
+      "listofallowedWorkloadNames": {
+        "type": "Array",
+        "metadata": {
+          "displayName": "Workload Names Tag Values",
+          "description": "A pre-approved list of values for the Workload Names tag"
+        }
+      },
+      "listofallowedBusinessUnits": {
+        "type": "Array",
+        "metadata": {
+          "displayName": "Business Units Tag Values",
+          "description": "A pre-approved list of values for the Business Units tag"
+        }
+      },
+      "listofExcludedResourceGroupNames": {
+        "type": "Array",
+        "metadata": {
+          "displayName": "Excluded Resource Group Names",
+          "description": "A list of resource group names that are excluded from the policy"
+        },
+        "defaultValue": [
+          "alz-asc-export",
+          "NetworkWatcherRG"
+        ]
+      }
+    },
+    "policyDefinitions": [
+      {
+        "policyDefinitionReferenceId": "Resource Groups with OperationsTeam tag applied must use pre-defined values",
+        "policyDefinitionId": "${root_scope_resource_id}/providers/Microsoft.Authorization/policyDefinitions/Require-Tag-values-RG",
+        "parameters": {
+          "tagName": {
+            "value": "OperationsTeam"
+          },
+          "listofallowedtagValues": {
+            "value": "[parameters('listofallowedOperationsTeams')]"
+          },
+          "listofExcludedResourceGroupNames": {
+            "value": "[parameters('listofExcludedResourceGroupNames')]"
+          }
+        },
+        "groupNames": []
+      },
+      {
+        "policyDefinitionReferenceId": "Resource Groups with DataClassification tag applied must use pre-defined values",
+        "policyDefinitionId": "${root_scope_resource_id}/providers/Microsoft.Authorization/policyDefinitions/Require-Tag-values-RG",
+        "parameters": {
+          "tagName": {
+            "value": "DataClassification"
+          },
+          "listofallowedtagValues": {
+            "value": "[parameters('listofallowedDataClassifications')]"
+          },
+          "listofExcludedResourceGroupNames": {
+            "value": "[parameters('listofExcludedResourceGroupNames')]"
+          }
+        },
+        "groupNames": []
+      },
+      {
+        "policyDefinitionReferenceId": "Resource Groups with BusinessCriticality tag applied must use pre-defined values",
+        "policyDefinitionId": "${root_scope_resource_id}/providers/Microsoft.Authorization/policyDefinitions/Require-Tag-values-RG",
+        "parameters": {
+          "tagName": {
+            "value": "BusinessCriticality"
+          },
+          "listofallowedtagValues": {
+            "value": "[parameters('listofallowedBusinessCriticality')]"
+          },
+          "listofExcludedResourceGroupNames": {
+            "value": "[parameters('listofExcludedResourceGroupNames')]"
+          }
+        },
+        "groupNames": []
+      },
+      {
+        "policyDefinitionReferenceId": "Resource Groups with WorkloadName applied must use pre-defined values",
+        "policyDefinitionId": "${root_scope_resource_id}/providers/Microsoft.Authorization/policyDefinitions/Require-Tag-values-RG",
+        "parameters": {
+          "tagName": {
+            "value": "WorkloadName"
+          },
+          "listofallowedtagValues": {
+            "value": "[parameters('listofallowedWorkloadNames')]"
+          },
+          "listofExcludedResourceGroupNames": {
+            "value": "[parameters('listofExcludedResourceGroupNames')]"
+          }
+        },
+        "groupNames": []
+      },
+      {
+        "policyDefinitionReferenceId": "Resource Groups with Business Unit applied must use pre-defined values",
+        "policyDefinitionId": "${root_scope_resource_id}/providers/Microsoft.Authorization/policyDefinitions/Require-Tag-values-RG",
+        "parameters": {
+          "tagName": {
+            "value": "BusinessUnit"
+          },
+          "listofallowedtagValues": {
+            "value": "[parameters('listofallowedBusinessUnits')]"
+          },
+          "listofExcludedResourceGroupNames": {
+            "value": "[parameters('listofExcludedResourceGroupNames')]"
+          }
+        },
+        "groupNames": []
+      },
+      {
+        "policyDefinitionReferenceId": "Resources with OperationsTeam tag applied must use pre-defined values",
+        "policyDefinitionId": "${root_scope_resource_id}/providers/Microsoft.Authorization/policyDefinitions/Require-Tag-values-Res",
+        "parameters": {
+          "tagName": {
+            "value": "OperationsTeam"
+          },
+          "listofallowedtagValues": {
+            "value": "[parameters('listofallowedOperationsTeams')]"
+          }
+        },
+        "groupNames": []
+      },
+      {
+        "policyDefinitionReferenceId": "Resources with DataClassification tag applied must use pre-defined values",
+        "policyDefinitionId": "${root_scope_resource_id}/providers/Microsoft.Authorization/policyDefinitions/Require-Tag-values-Res",
+        "parameters": {
+          "tagName": {
+            "value": "DataClassification"
+          },
+          "listofallowedtagValues": {
+            "value": "[parameters('listofallowedDataClassifications')]"
+          }
+        },
+        "groupNames": []
+      },
+      {
+        "policyDefinitionReferenceId": "Resources with BusinessCriticality tag applied must use pre-defined values",
+        "policyDefinitionId": "${root_scope_resource_id}/providers/Microsoft.Authorization/policyDefinitions/Require-Tag-values-Res",
+        "parameters": {
+          "tagName": {
+            "value": "BusinessCriticality"
+          },
+          "listofallowedtagValues": {
+            "value": "[parameters('listofallowedBusinessCriticality')]"
+          }
+        },
+        "groupNames": []
+      },
+      {
+        "policyDefinitionReferenceId": "Resources with WorkloadName applied must use pre-defined values",
+        "policyDefinitionId": "${root_scope_resource_id}/providers/Microsoft.Authorization/policyDefinitions/Require-Tag-values-Res",
+        "parameters": {
+          "tagName": {
+            "value": "WorkloadName"
+          },
+          "listofallowedtagValues": {
+            "value": "[parameters('listofallowedWorkloadNames')]"
+          }
+        },
+        "groupNames": []
+      },
+      {
+        "policyDefinitionReferenceId": "Resources with Business Unit applied must use pre-defined values",
+        "policyDefinitionId": "${root_scope_resource_id}/providers/Microsoft.Authorization/policyDefinitions/Require-Tag-values-Res",
+        "parameters": {
+          "tagName": {
+            "value": "BusinessUnit"
+          },
+          "listofallowedtagValues": {
+            "value": "[parameters('listofallowedBusinessUnits')]"
+          }
+        },
+        "groupNames": []
+      }
+    ],
+    "policyDefinitionGroups": null
+  }
+}

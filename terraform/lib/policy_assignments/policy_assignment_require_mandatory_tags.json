@@ -1,0 +1,86 @@
+{
+  "name": "Require-Mand-Tags",
+  "type": "Microsoft.Authorization/policyAssignments",
+  "apiVersion": "2019-09-01",
+  "properties": {
+    "description": "Enforce Mandatory Tags and Values on resource groups and resources",
+    "displayName": "Resource groups and resources must have mandatory tags and values applied",
+    "notScopes": [],
+    "parameters": {
+      "listofallowedOperationsTeams": {
+        "value": [
+          "IT Application Development",
+          "IT Application Support",
+          "Platform Engineering",
+          "Platform Operations",
+          "Security Operations",
+          "Identity & Access Engineering",
+          "Workplace Engineering",
+          "Workplace Operations"
+        ]
+      },
+      "listofallowedDataClassifications": {
+        "value": [
+          "Non-business",
+          "Public",
+          "General",
+          "Confidential",
+          "Highly confidential"
+        ]
+      },
+      "listofallowedBusinessCriticality": {
+        "value": [
+          "Low",
+          "Medium",
+          "High",
+          "Business unit-critical",
+          "Mission-critical"
+        ]
+      },
+      "listofallowedWorkloadNames": {
+        "value": [
+          "ALZ.Bootstrap",
+          "ALZ.Connectivity",
+          "ALZ.Core",
+          "ALZ.FirewallConfiguration",
+          "ALZ.Identity",
+          "ALZ.LandingZones",
+          "ALZ.Management",
+          "ADO.AgentPools"
+        ]
+      },
+      "listofallowedBusinessUnits": {
+        "value": [
+          "Development Integration",
+          "Software Development Applications",
+          "Analytics & Data",
+          "Application Support",
+          "Platform Operations",
+          "Infrastructure",
+          "EUT Support",
+          "Workplace",
+          "Technical Security",
+          "Security Operations",
+          "Network Services",
+          "Identity and Access Management",
+          "Application Operations",
+          "Software Development Applications",
+          "Testing",
+          "ITSM"
+        ]
+      }
+    },
+    "policyDefinitionId": "${root_scope_resource_id}/providers/Microsoft.Authorization/policySetDefinitions/Require-Mand-Tags",
+    "scope": "${current_scope_resource_id}",
+    "enforcementMode": null,
+    "nonComplianceMessages": [
+      {
+        "message": "Correct tags and values must be provided."
+      }
+    ]
+  },
+  "location": "${default_location}",
+  "identity": {
+    "type": "SystemAssigned"
+  }
+}

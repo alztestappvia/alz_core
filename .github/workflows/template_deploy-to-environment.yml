@@ -1,0 +1,91 @@
+on:
+  workflow_call:
+    inputs:
+      environment: 
+        type: string
+        required: true
+        description: 'The environment to deploy to'
+      runs-on:
+        type: string
+        required: false
+        description: 'The runner to run on'
+        default: 'ubuntu-latest'
+    secrets:
+      GH_TOKEN:
+        required: true
+        description: 'The GitHub Token'
+
+permissions:
+      id-token: write
+      contents: read
+
+jobs:
+  prepare_vars:
+    name: Prepare Variables
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - id: prepare_vars
+        run: |
+          echo "AZURE_CLIENT_ID=${{ vars.AZURE_CLIENT_ID }}" >> "$GITHUB_OUTPUT"
+          echo "AZURE_TENANT_ID=${{ vars.AZURE_TENANT_ID }}" >> "$GITHUB_OUTPUT"
+          echo "terraform-subscription-id=${{ vars.SUBSCRIPTION_MANAGEMENT }}" >> "$GITHUB_OUTPUT"
+          echo "terraform-backend-subscription-id=${{ vars.SUBSCRIPTION_STATE }}" >> "$GITHUB_OUTPUT"
+          echo "terraform-backend-storage-account-name=${{ vars.ID_ALZ_CORE }}" >> "$GITHUB_OUTPUT"
+          echo "management-storage-account-name=${{ vars.ID_ALZ_MANAGEMENT }}" >> "$GITHUB_OUTPUT"
+          echo "connectivity-storage-account-name=${{ vars.ID_ALZ_CONNECTIVITY }}" >> "$GITHUB_OUTPUT"
+          echo "identity-storage-account-name=${{ vars.ID_ALZ_IDENTITY }}" >> "$GITHUB_OUTPUT"
+    outputs:
+      AZURE_CLIENT_ID: ${{ steps.prepare_vars.outputs.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ steps.prepare_vars.outputs.AZURE_TENANT_ID }}
+      terraform-subscription-id: ${{ steps.prepare_vars.outputs.terraform-subscription-id }}
+      terraform-backend-subscription-id: ${{ steps.prepare_vars.outputs.terraform-backend-subscription-id }}
+      terraform-backend-storage-account-name: ${{ steps.prepare_vars.outputs.terraform-backend-storage-account-name }}
+      management-storage-account-name: ${{ steps.prepare_vars.outputs.management-storage-account-name }}
+      connectivity-storage-account-name: ${{ steps.prepare_vars.outputs.connectivity-storage-account-name }}
+      identity-storage-account-name: ${{ steps.prepare_vars.outputs.identity-storage-account-name }}
+
+  deploy_terraform: 
+    uses: alztestappvia/alz_cicd_templates/.github/workflows/terraform-deploy.yaml@main
+    needs: prepare_vars
+    name: Run Terraform
+
+    with:
+      environment: ${{ inputs.environment }}
+      pool: ${{ inputs.runs-on }}
+      terraform-subscription-id: ${{ needs.prepare_vars.outputs.terraform-subscription-id }}
+      terraform-backend-subscription-id: ${{ needs.prepare_vars.outputs.terraform-backend-subscription-id }}
+      terraform-backend-storage-account-name: ${{ needs.prepare_vars.outputs.terraform-backend-storage-account-name }}
+      terraform-backend-filename: core.tfstate
+      terraform-command-options: '-var use_oidc=true -var rbac_template_name=basic -var connectivity_storage_account_name=${{ needs.prepare_vars.outputs.connectivity-storage-account-name }} -var management_storage_account_name=${{ needs.prepare_vars.outputs.management-storage-account-name }} -var identity_storage_account_name=${{ needs.prepare_vars.outputs.identity-storage-account-name }} -var state_subscription_id=${{ needs.prepare_vars.outputs.terraform-backend-subscription-id }}'
+    secrets:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      AZURE_CLIENT_ID: ${{ needs.prepare_vars.outputs.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ needs.prepare_vars.outputs.AZURE_TENANT_ID }}
+
+  deploy_amba: 
+    needs: 
+    - prepare_vars
+    - deploy_terraform
+    name: Deploy AMBA (Monitoring)
+    runs-on: ${{ inputs.runs-on }}
+    if: success() && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release'))
+    environment: ${{ inputs.environment  }}
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: Login via Az module
+      uses: azure/login@v1
+      with:
+        client-id: ${{ needs.prepare_vars.outputs.AZURE_CLIENT_ID }}
+        tenant-id: ${{ needs.prepare_vars.outputs.AZURE_TENANT_ID }}
+        subscription-id: ${{ needs.prepare_vars.outputs.terraform-subscription-id }}
+        enable-AzPSSession: true
+    - name: Azure CLI script
+      uses: azure/CLI@v1
+      with:
+        inlineScript: |
+          az deployment mg create --template-uri https://raw.githubusercontent.com/Azure/azure-monitor-baseline-alerts/2023-11-14/patterns/alz/alzArm.json --location "uksouth" --management-group-id "alz" --parameters ./amba/alzArm.param.json
+    

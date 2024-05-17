@@ -1,0 +1,187 @@
+{
+  "name": "Deploy-SubActivityAlerts",
+  "type": "Microsoft.Authorization/policySetDefinitions",
+  "apiVersion": "2021-06-01",
+  "scope": null,
+  "properties": {
+    "policyType": "Custom",
+    "description": "This policy deploys subscription base activity alerts.",
+    "displayName": "Create subscription activity log alerts for CIS compliance",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "Monitoring"
+    },
+    "parameters": {
+      "actionGroupResourceId": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Action Group Resource Id",
+          "description": "Resource Id of the action group to be used for activity log alert"
+        }
+      }
+    },
+    "policyDefinitions": [
+      {
+        "policyDefinitionReferenceId": "Deploy Activity Log Alert for Create or Update SQL Server Firewall Rule",
+        "policyDefinitionId": "${root_scope_resource_id}/providers/Microsoft.Authorization/policyDefinitions/Deploy-SubActivityAlerts",
+        "parameters": {
+          "category": {
+            "value": "Administrative"
+          },
+          "operationName": {
+            "value": "Microsoft.Sql/servers/firewallRules/write"
+          },
+          "actionGroupResourceId": {
+            "value": "[parameters('actionGroupResourceId')]"
+          }
+        },
+        "groupNames": []
+      },
+      {
+        "policyDefinitionReferenceId": "Deploy Activity Log Alert for Delete SQL Server Firewall Rule",
+        "policyDefinitionId": "${root_scope_resource_id}/providers/Microsoft.Authorization/policyDefinitions/Deploy-SubActivityAlerts",
+        "parameters": {
+          "category": {
+            "value": "Administrative"
+          },
+          "operationName": {
+            "value": "Microsoft.Sql/servers/firewallRules/delete"
+          },
+          "actionGroupResourceId": {
+            "value": "[parameters('actionGroupResourceId')]"
+          }
+        },
+        "groupNames": []
+      },
+      {
+        "policyDefinitionReferenceId": "Deploy Activity Log Alert for Create Policy Assignment",
+        "policyDefinitionId": "${root_scope_resource_id}/providers/Microsoft.Authorization/policyDefinitions/Deploy-SubActivityAlerts",
+        "parameters": {
+          "category": {
+            "value": "Administrative"
+          },
+          "operationName": {
+            "value": "Microsoft.Authorization/policyAssignments/write"
+          },
+          "actionGroupResourceId": {
+            "value": "[parameters('actionGroupResourceId')]"
+          }
+        },
+        "groupNames": []
+      },
+      {
+        "policyDefinitionReferenceId": "Deploy Activity Log Alert for Delete Policy Assignment",
+        "policyDefinitionId": "${root_scope_resource_id}/providers/Microsoft.Authorization/policyDefinitions/Deploy-SubActivityAlerts",
+        "parameters": {
+          "category": {
+            "value": "Administrative"
+          },
+          "operationName": {
+            "value": "Microsoft.Authorization/policyAssignments/delete"
+          },
+          "actionGroupResourceId": {
+            "value": "[parameters('actionGroupResourceId')]"
+          }
+        },
+        "groupNames": []
+      },
+      {
+        "policyDefinitionReferenceId": "Deploy Activity Log Alert for Create or Update Network Security Group",
+        "policyDefinitionId": "${root_scope_resource_id}/providers/Microsoft.Authorization/policyDefinitions/Deploy-SubActivityAlerts",
+        "parameters": {
+          "category": {
+            "value": "Administrative"
+          },
+          "operationName": {
+            "value": "Microsoft.Network/networkSecurityGroups/write"
+          },
+          "actionGroupResourceId": {
+            "value": "[parameters('actionGroupResourceId')]"
+          }
+        },
+        "groupNames": []
+      },
+      {
+        "policyDefinitionReferenceId": "Deploy Activity Log Alert for Delete Network Security Group",
+        "policyDefinitionId": "${root_scope_resource_id}/providers/Microsoft.Authorization/policyDefinitions/Deploy-SubActivityAlerts",
+        "parameters": {
+          "category": {
+            "value": "Administrative"
+          },
+          "operationName": {
+            "value": "Microsoft.Network/networkSecurityGroups/delete"
+          },
+          "actionGroupResourceId": {
+            "value": "[parameters('actionGroupResourceId')]"
+          }
+        },
+        "groupNames": []
+      },
+      {
+        "policyDefinitionReferenceId": "Deploy Activity Log Alert for Create or Update Network Security Group Rule",
+        "policyDefinitionId": "${root_scope_resource_id}/providers/Microsoft.Authorization/policyDefinitions/Deploy-SubActivityAlerts",
+        "parameters": {
+          "category": {
+            "value": "Administrative"
+          },
+          "operationName": {
+            "value": "Microsoft.Network/networkSecurityGroups/securityRules/write"
+          },
+          "actionGroupResourceId": {
+            "value": "[parameters('actionGroupResourceId')]"
+          }
+        },
+        "groupNames": []
+      },
+      {
+        "policyDefinitionReferenceId": "Deploy Activity Log Alert for Delete Network Security Group Rule",
+        "policyDefinitionId": "${root_scope_resource_id}/providers/Microsoft.Authorization/policyDefinitions/Deploy-SubActivityAlerts",
+        "parameters": {
+          "category": {
+            "value": "Administrative"
+          },
+          "operationName": {
+            "value": "Microsoft.Network/networkSecurityGroups/securityRules/delete"
+          },
+          "actionGroupResourceId": {
+            "value": "[parameters('actionGroupResourceId')]"
+          }
+        },
+        "groupNames": []
+      },
+      {
+        "policyDefinitionReferenceId": "Deploy Activity Log Alert for Create or Update Security Solution",
+        "policyDefinitionId": "${root_scope_resource_id}/providers/Microsoft.Authorization/policyDefinitions/Deploy-SubActivityAlerts",
+        "parameters": {
+          "category": {
+            "value": "Security"
+          },
+          "operationName": {
+            "value": "Microsoft.Security/securitySolutions/write"
+          },
+          "actionGroupResourceId": {
+            "value": "[parameters('actionGroupResourceId')]"
+          }
+        },
+        "groupNames": []
+      },
+      {
+        "policyDefinitionReferenceId": "Deploy Activity Log Alert for Delete Security Solution",
+        "policyDefinitionId": "${root_scope_resource_id}/providers/Microsoft.Authorization/policyDefinitions/Deploy-SubActivityAlerts",
+        "parameters": {
+          "category": {
+            "value": "Security"
+          },
+          "operationName": {
+            "value": "Microsoft.Security/securitySolutions/delete"
+          },
+          "actionGroupResourceId": {
+            "value": "[parameters('actionGroupResourceId')]"
+          }
+        },
+        "groupNames": []
+      }
+    ],
+    "policyDefinitionGroups": null
+  }
+}

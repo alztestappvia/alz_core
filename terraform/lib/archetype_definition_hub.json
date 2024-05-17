@@ -1,0 +1,21 @@
+{
+    "hub": {
+        "policy_assignments": [
+            "Deny-Public-IP",
+            "DENY-AppSvc-SKU-NoPrvLnk",
+            "Deploy-Private-DNS-Zones",
+            "Deny-Public-Endpoints",
+            "Enable-LA-Agent-AutoPrvn",
+            "Deploy-SubActivityAlerts",
+            "CIS-1-4-0",
+            "NIST-SP-800-53-Rev5"
+        ],
+        "policy_definitions": [],
+        "policy_set_definitions": [],
+        "role_definitions": [],
+        "archetype_config": {
+            "parameters": {},
+            "access_control": {}
+        }
+    }
+}

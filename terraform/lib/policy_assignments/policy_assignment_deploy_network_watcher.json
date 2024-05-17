@@ -1,0 +1,19 @@
+{
+    "name": "Deploy-NetWatcher",
+    "type": "Microsoft.Authorization/policyAssignments",
+    "apiVersion": "2019-09-01",
+    "properties": {
+        "description": "This assigns a policy to automatically deploy Network Watcher to new vnets.",
+        "displayName": "Deploy network watcher when virtual networks are created",
+        "notScopes": [],
+        "parameters": {},
+        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/a9b99dd8-06c5-4317-8629-9d86a3c6e7d9",
+        "nonComplianceMessages": [],
+        "scope": "${current_scope_resource_id}",
+        "enforcementMode": null
+    },
+    "location": "${default_location}",
+    "identity": {
+        "type": "SystemAssigned"
+    }
+}

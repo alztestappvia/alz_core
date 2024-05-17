@@ -1,0 +1,84 @@
+{
+    "name": "Require-Tag-values-RG",
+    "type": "Microsoft.Authorization/policyDefinitions",
+    "apiVersion": "2021-06-01",
+    "scope": null,
+    "properties": {
+        "policyType": "Custom",
+        "mode": "All",
+        "displayName": "Require tag to use pre-defined values on resource groups",
+        "description": "Require tag to use pre-defined values on resource groups.",
+        "metadata": {
+            "version": "1.0.0",
+            "category": "Tags",
+            "source": "Appvia",
+            "alzCloudEnvironments": [
+                "AzureCloud",
+                "AzureChinaCloud",
+                "AzureUSGovernment"
+            ]
+        },
+        "policyRule": {
+            "if": {
+                "allOf": [
+                    {
+                        "field": "type",
+                        "equals": "Microsoft.Resources/subscriptions/resourceGroups"
+                    },
+                    {
+                        "not": {
+                            "field": "[concat('tags[', parameters('tagName'), ']')]",
+                            "in": "[parameters('listofallowedtagValues')]"
+                        }
+                    },
+                    {
+                        "not": {
+                            "field": "name",
+                            "in": "[parameters('listofExcludedResourceGroupNames')]"
+                        }
+                    }
+                ]
+            },
+            "then": {
+                "effect": "[parameters('effect')]"
+            }
+        },
+        "parameters": {
+            "effect": {
+                "type": "String",
+                "metadata": {
+                    "displayName": "Effect",
+                    "description": "Enable or disable the execution of the audit policy"
+                },
+                "allowedValues": [
+                    "Audit",
+                    "Deny",
+                    "Disabled"
+                ],
+                "defaultValue": "Deny"
+            },
+            "tagName": {
+                "type": "String",
+                "metadata": {
+                    "displayName": "Tag Name",
+                    "description": "Name of the tag"
+                }
+            },
+            "listofallowedtagValues": {
+                "type": "Array",
+                "metadata": {
+                    "displayName": "Tag Values",
+                    "description": "A pre-approved list of values for the tag"
+                }
+            },
+            "listofExcludedResourceGroupNames": {
+                "type": "Array",
+                "metadata": {
+                    "displayName": "Excluded Resource Group Names",
+                    "description": "A list of resource group names to exclude from this policy"
+                },
+                "defaultValue": []
+            }
+        }
+    }
+}
